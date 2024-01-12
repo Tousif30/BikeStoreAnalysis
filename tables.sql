@@ -32,7 +32,7 @@ CREATE TABLE PRODUCTS(
     brand_id INT,
     category_id INT,
     model_year VARCHAR(10),
-    list_price INT,
+    list_price FLOAT,
     FOREIGN KEY (brand_id) REFERENCES BRANDS(brand_id),
     FOREIGN KEY (category_id) REFERENCES CATEGORIES(category_id)
 );
@@ -82,8 +82,8 @@ CREATE TABLE ORDER_ITEMS(
     item_id INT,
     product_id INT,
     quantity INT,
-    list_price INT,
-    discount INT,
+    list_price FLOAT,
+    discount FLOAT,
     PRIMARY KEY(order_id, item_id),
     FOREIGN KEY (order_id) REFERENCES ORDERS(order_id),
     FOREIGN KEY (product_id) REFERENCES PRODUCTS(product_id)
@@ -114,5 +114,3 @@ LOAD DATA INFILE 'C:/Users/tousi/OneDrive/Desktop/Projects/BikeStoreAnalysis/dat
 
 -- Read order_items data
 LOAD DATA INFILE 'C:/Users/tousi/OneDrive/Desktop/Projects/BikeStoreAnalysis/data/order_items.csv' INTO TABLE ORDER_ITEMS FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
-
-select * from order_items LIMIT 5;
