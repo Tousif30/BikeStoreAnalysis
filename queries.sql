@@ -86,3 +86,18 @@ from ORDERS
 GROUP BY MONTH(date_format(order_date,'%Y-%m-%d'))
 ORDER BY COUNT(order_id) DESC;
 
+-- 13. Income of each month
+SELECT MONTH(date_format(order_date,'%Y-%m-%d')) AS 'Month', SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) AS 'Total income'
+FROM ORDERS o
+INNER JOIN ORDER_ITEMS i ON o.order_id = i.order_id
+GROUP BY MONTH(date_format(order_date,'%Y-%m-%d'))
+ORDER BY SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) DESC;
+
+-- 14. Income by each category during each month
+SELECT MONTH(date_format(order_date,'%Y-%m-%d')) AS 'Month',c.category_name, SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) AS 'Total income'
+FROM ORDERS o
+INNER JOIN ORDER_ITEMS i ON o.order_id = i.order_id
+INNER JOIN PRODUCTS p ON i.product_id = p.product_id
+INNER JOIN CATEGORIES c ON p.category_id = c.category_id
+GROUP BY MONTH(date_format(order_date,'%Y-%m-%d')), c.category_name
+ORDER BY MONTH(date_format(order_date,'%Y-%m-%d')) ASC, SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) DESC;
