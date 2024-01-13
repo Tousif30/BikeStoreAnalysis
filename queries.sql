@@ -48,5 +48,41 @@ GROUP BY s.store_name, p.product_name
 HAVING SUM(i.quantity) > 30
 ORDER BY SUM(i.quantity) DESC;
 
+-- 8. Categories which were sold the most
+SELECT c.category_name, SUM(i.quantity) AS 'Total quantity sold'
+FROM ORDER_ITEMS i 
+INNER JOIN PRODUCTS p ON i.product_id = p.product_id
+INNER JOIN CATEGORIES c ON p.category_id = c.category_id
+GROUP BY c.category_name
+ORDER BY SUM(i.quantity) DESC;
 
+-- 9. Total income by each category
+SELECT c.category_name, SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) AS 'Total income'
+FROM ORDER_ITEMS i
+INNER JOIN PRODUCTS p ON i.product_id = p.product_id
+INNER JOIN CATEGORIES c ON p.category_id = c.category_id
+GROUP BY c.category_name
+ORDER BY SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) DESC;
+
+-- 10. Brands which were sold the most
+SELECT b.brand_name, SUM(i.quantity) AS 'Total quantity sold'
+FROM ORDER_ITEMS i 
+INNER JOIN PRODUCTS p ON i.product_id = p.product_id
+INNER JOIN BRANDS b ON p.brand_id = b.brand_id
+GROUP BY b.brand_name
+ORDER BY SUM(i.quantity) DESC;
+
+-- 11. Total income by each brand
+SELECT b.brand_name, SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) AS 'Total income'
+FROM ORDER_ITEMS i
+INNER JOIN PRODUCTS p ON i.product_id = p.product_id
+INNER JOIN BRANDS b ON p.brand_id = b.brand_id
+GROUP BY b.brand_name
+ORDER BY SUM(i.quantity*(i.list_price-(i.list_price*i.discount))) DESC;
+
+-- 12. Number of orders per month
+select MONTH(date_format(order_date,'%Y-%m-%d')) AS 'Month', COUNT(order_id) AS 'No. of orders'
+from ORDERS
+GROUP BY MONTH(date_format(order_date,'%Y-%m-%d'))
+ORDER BY COUNT(order_id) DESC;
 
